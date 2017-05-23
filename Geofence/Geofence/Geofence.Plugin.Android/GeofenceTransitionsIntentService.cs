@@ -16,7 +16,7 @@ namespace Geofence.Plugin
     /// GeofenceTransitionsIntentService class
     /// Service that handles geofence events
     /// </summary>
-    [Service]
+    //[Service]
     public class GeofenceTransitionsIntentService : IntentService
     {
         static int NotificationId = 0;

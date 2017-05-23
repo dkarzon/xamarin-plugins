@@ -19,8 +19,8 @@ namespace Geofence.Plugin
     /// GeofenceBootReceiver class
     /// Receive geofence updates
     /// </summary>
-    [BroadcastReceiver]
-    [IntentFilter(new string[] { "@PACKAGE_NAME@.ACTION_RECEIVE_GEOFENCE" })]
+    //[BroadcastReceiver]
+    //[IntentFilter(new string[] { "@PACKAGE_NAME@.ACTION_RECEIVE_GEOFENCE" })]
     public class GeofenceBroadcastReceiver : WakefulBroadcastReceiver
     {
         /// <summary>
