@@ -12,8 +12,8 @@ namespace Geofence.Plugin
     /// GeofenceBootReceiver class
     /// Receives BOOT_COMPLETED event
     /// </summary>
-    [BroadcastReceiver]
-    [IntentFilter(new[] { Intent.ActionBootCompleted})]
+    //[BroadcastReceiver]
+    //[IntentFilter(new[] { Intent.ActionBootCompleted})]
     public class GeofenceBootReceiver : BroadcastReceiver
     {
         /// <summary>
