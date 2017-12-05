@@ -314,19 +314,27 @@ namespace Geofence.Plugin
       /// <returns></returns>
       public async Task CheckIfStayed(string regionId)
       {
-          if (GeofenceRegionExists(regionId) && CrossGeofence.Current.Regions[regionId].NotifyOnStay && CrossGeofence.Current.GeofenceResults[regionId].Transition == GeofenceTransition.Entered && CrossGeofence.Current.Regions[regionId].StayedInThresholdDuration.TotalMilliseconds != 0)
+          if (!GeofenceRegionExists(regionId))
           {
-              await Task.Delay((int)CrossGeofence.Current.Regions[regionId].StayedInThresholdDuration.TotalMilliseconds);
+              return;
+          }
 
-              if (GeofenceRegionExists(regionId) && CrossGeofence.Current.GeofenceResults[regionId].LastExitTime == null && CrossGeofence.Current.GeofenceResults[regionId].Transition != GeofenceTransition.Stayed)
+          var region = CrossGeofence.Current.Regions[regionId];
+          var fenceResult = CrossGeofence.Current.GeofenceResults[regionId];
+
+          if (region.NotifyOnStay && fenceResult.Transition == GeofenceTransition.Entered && region.StayedInThresholdDuration.TotalMilliseconds != 0)
+          {
+              await Task.Delay((int)region.StayedInThresholdDuration.TotalMilliseconds);
+
+              if (GeofenceRegionExists(regionId) && fenceResult.LastExitTime == null && fenceResult.Transition != GeofenceTransition.Stayed)
               {
-                  CrossGeofence.Current.GeofenceResults[regionId].Transition = GeofenceTransition.Stayed;
+                  fenceResult.Transition = GeofenceTransition.Stayed;
 
-                  CrossGeofence.GeofenceListener.OnRegionStateChanged(CrossGeofence.Current.GeofenceResults[regionId]);
+                  CrossGeofence.GeofenceListener.OnRegionStateChanged(fenceResult);
 
-                  if (CrossGeofence.Current.Regions[regionId].ShowNotification && CrossGeofence.Current.Regions[regionId].ShowStayNotification)
+                  if (region.ShowNotification && region.ShowStayNotification)
                   {
-                      CreateNotification(ViewAction, string.IsNullOrEmpty(CrossGeofence.Current.Regions[regionId].NotificationStayMessage) ? CrossGeofence.Current.GeofenceResults[regionId].ToString() : CrossGeofence.Current.Regions[regionId].NotificationStayMessage);
+                      CreateNotification(ViewAction, string.IsNullOrEmpty(region.NotificationStayMessage) ? fenceResult.ToString() : region.NotificationStayMessage);
                   }
 
               }
